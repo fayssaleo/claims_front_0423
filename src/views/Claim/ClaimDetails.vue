@@ -1,12 +1,12 @@
 <template>
-  <v-row>
-    <v-col cols="10" class="claimHeader">
+  <v-row class="claimDetailsHolder">
+    <v-col cols="10" class="claimHeader1">
       <v-row>
         <v-col cols="6"
           ><strong>Claim : {{ selectedClaimToShow.claimSerial }}</strong></v-col
         >
         <v-col cols="6"
-          ><strong>Claim Date:</strong> {{ claim.claim_date || "N/A" }}</v-col
+          ><strong>Claim Date:</strong> {{ claim.claim_date || "Empty" }}</v-col
         >
         <v-col cols="6"><strong>Status:</strong> {{ claim.status }}</v-col>
         <v-col cols="6"
@@ -23,7 +23,7 @@
       <v-expansion-panels class="ma-0 pa-0">
         <v-expansion-panel class="ma-0 pa-0">
           <v-expansion-panel-header
-            class="white--text font-weight-bold equipHeader"
+            class="white--text font-weight-bold equipHeader1"
             toggle-icon-color="white"
           >
             EQUIPMENT ({{ claim.equipments.length }})
@@ -523,7 +523,7 @@
       <v-expansion-panels class="ma-0 pa-0">
         <v-expansion-panel class="ma-0 pa-0">
           <v-expansion-panel-header
-            class="white--text font-weight-bold equipHeader"
+            class="white--text font-weight-bold equipHeader1"
             toggle-icon-color="white"
           >
             AUTOMOBILES ({{ claim.automobiles.length }})
@@ -1023,7 +1023,7 @@
       <v-expansion-panels class="ma-0 pa-0">
         <v-expansion-panel class="ma-0 pa-0">
           <v-expansion-panel-header
-            class="white--text font-weight-bold equipHeader"
+            class="white--text font-weight-bold equipHeader1"
             toggle-icon-color="white"
           >
             CONTAINERS ({{ claim.containers.length }})
@@ -1529,7 +1529,7 @@
       <v-expansion-panels class="ma-0 pa-0">
         <v-expansion-panel class="ma-0 pa-0">
           <v-expansion-panel-header
-            class="white--text font-weight-bold equipHeader"
+            class="white--text font-weight-bold equipHeader1"
             toggle-icon-color="white"
           >
             VESSELS ({{ claim.vessels.length }})
@@ -2147,7 +2147,7 @@ export default {
   },
 };
 </script>
-<style lang="scss">
+<style lang="scss" >
 .claimDetailsTable * {
   color: black !important;
   td {
@@ -2158,7 +2158,7 @@ export default {
     border-bottom: 1px solid black !important;
   }
 }
-.claimHeader {
+.claimHeader1 {
   margin: 0px auto;
   text-align: left;
   padding-top: 26px;
@@ -2167,7 +2167,7 @@ export default {
   font-size: 15px;
   margin-bottom: 15px;
 }
-.equipHeader {
+.equipHeader1 {
   margin: 0px auto;
 
   text-align: center;
@@ -2189,4 +2189,5 @@ export default {
   color: white !important;
   cursor: pointer;
 }
+
 </style>

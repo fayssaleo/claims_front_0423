@@ -179,7 +179,7 @@
               <v-col cols="12" class="ma-0 pa-0">
                 <v-btn
                   color="#5C6BC0"
-                  @click="showDetailsAction()"
+                  @click="showDetailsAction(item)"
                   class="m-2 btnAction white--text"
                   style="height: 26px; min-width: 100%; margin-bottom: 7px"
                 >
@@ -193,7 +193,6 @@
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>Claims</v-toolbar-title>
-
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-text-field
             v-model="search"
@@ -205,11 +204,12 @@
           <v-btn
             color="green"
             class="white--text DownloadBtn"
-            @click="download()"
+            @click="showToDownlodPDFDialogAction()"
           >
             <v-icon left> mdi-download </v-icon>
             Download
           </v-btn>
+
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{}">
@@ -4417,6 +4417,7 @@
             fullscreen
             :scrim="false"
             transition="dialog-bottom-transition"
+            v-if="showDetailsDialog"
           >
             <template v-slot:activator="{ props }"> </template>
             <v-card>
@@ -4424,17 +4425,82 @@
                 <v-btn icon dark @click="showDetailsDialog = false">
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
-                <v-toolbar-title>Settings</v-toolbar-title>
+                <v-toolbar-title>{{ ((selectedClaimToShow.ClaimOrIncident=='Incident')?'INCIDENT : ':'CLAIM : ')+selectedClaimToShow.claimSerial }}</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
-                  <v-btn color="green" variant="text" @click="dialog = false">
+                  <v-btn
+                    color="green"
+                    variant="text"
+                    @click="showDetailsDialog = false"
+                  >
                     DOWNLOAD
                   </v-btn>
                 </v-toolbar-items>
               </v-toolbar>
               <card-text>
-                <ClaimDetails />
+                <ClaimDetails :selectedClaimToShow="selectedClaimToShow" />
               </card-text>
+            </v-card>
+          </v-dialog>
+          <v-dialog
+            v-model="showToDownlodPDFDialog"
+            width="800px"
+            :class="'downloadPdfExBtn'"
+            
+          >
+            <template v-slot:activator="{ props }"> </template>
+            <v-card >
+              <v-toolbar dark color="primary" class="sticky-toolbar">
+                <v-btn icon dark @click="showToDownlodPDFDialog = false">
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+                <v-toolbar-title>Download ( {{ selectedClaims.length}} Selected )</v-toolbar-title>
+                <v-spacer></v-spacer>
+                <span style="cursor: pointer; font-size: 20px; margin-right: 20px;" 
+                @click="selectedClaims.length==afterFiltedArray.length?selectedClaims=[]:selectedClaims=[...afterFiltedArray] ">
+                Select all 
+              </span>
+                <v-checkbox
+                  color="red"
+                  :value="selectedClaims.length==afterFiltedArray.length"
+                  @click="selectedClaims.length==afterFiltedArray.length?selectedClaims=[]:selectedClaims=[...afterFiltedArray] "
+                  hide-details
+                ></v-checkbox>
+                
+                <v-toolbar-items> </v-toolbar-items>
+              </v-toolbar>
+              <card-text >
+                <v-checkbox-group v-model="selectedClaims"  class="checklist" >
+                  <v-checkbox
+                    v-for="claim in afterFiltedArray"
+                    :key="claim.id"
+                    :label="claim.claimSerial"
+                    :value="selectedClaims.filter(e => e.id == claim.id).length > 0"
+                    @click="toggleSelectedClaims(claim)"
+                    :class="{ 'checked': selectedClaims.filter(e => e.id == claim.id).length > 0 }"
+                  ></v-checkbox>
+                </v-checkbox-group>
+              </card-text>
+              <v-card-actions class="sbicky-toolbar" dark color="primary">
+                <span style="font-size: 20px; margin-right: 20px;">
+                  Downlod :
+                </span>
+                <v-btn
+                  color=" red"
+                  class="white--text"
+                  @click="showToDownlodPDFDialog = false"
+                  >As
+                  <v-icon medium class="ml-2"> mdi-file-pdf-box </v-icon></v-btn
+                >
+                <v-btn color="#009688" class="white--text" @click="downloadAsExcel(selectedClaims)"
+                  >As
+                  <v-icon medium class="ml-2">
+                    mdi-microsoft-excel
+                  </v-icon></v-btn
+                >
+                <v-spacer></v-spacer>
+                <v-btn color="darken-1" @click="showToDownlodPDFDialog = false">Close</v-btn>
+              </v-card-actions>
             </v-card>
           </v-dialog>
         </v-toolbar>
@@ -4461,13 +4527,17 @@ import ClaimDetails from "./ClaimDetails.vue";
 import { mapActions, mapGetters } from "vuex";
 var XLSX = require("xlsx-color");
 import { saveAs } from "file-saver";
+import VueHtml2pdf from "vue-html2pdf";
 export default {
   components: { ClaimDetails },
   data: () => ({
+    selectedClaimToShow:{},
+    selectedClaims:[],
+    showToDownlodPDFDialog: false,
     showDetailsDialog: false,
     paidDateTimeShow: false,
     paidDateTimeText: "",
-    basicPathForDownload: "http://10.20.33.112:9008/storage/cdn/",
+    basicPathForDownload: "",
     afterFiltedArray: [],
     monthMenu: false,
     txtMonth: "",
@@ -4539,7 +4609,7 @@ export default {
   }),
   mounted() {
     document.title = "Claim";
-
+    this.basicPathForDownload = process.env.VUE_APP_API_URL + "/storage/cdn/";
     this.initialize();
   },
   computed: {
@@ -4578,7 +4648,6 @@ export default {
   created() {},
   methods: {
     initialize() {
-      console.log("initiala");
       this.claims = [];
       this.loading = true;
       if (this.txtMonth != "" && this.txtMonth != null) {
@@ -5311,9 +5380,9 @@ export default {
           this.setModuleShowToFalseAction();
         });
     },
-    download() {
+    downloadAsExcel(Ids) {
       this.setModuleShowToTrueAction();
-      this.setindexClaimsByIdsAction(this.afterFiltedArray.map((e) => e.id))
+      this.setindexClaimsByIdsAction(Ids.map((e) => e.id))
         .then((result) => {
           console.log(this.getCLAIMS_TO_DOWNLOAD);
           var workbook = XLSX.utils.book_new();
@@ -5908,8 +5977,17 @@ export default {
         })
         .catch((e) => {});
     },
-    showDetailsAction() {
-      this.showDetailsDialog = true;
+    showDetailsAction(item) {
+      this.setindexClaimsByIdsAction([item.id])
+        .then(() => {
+          this.selectedClaimToShow=item;
+          this.showDetailsDialog = true;
+        })
+        .catch((e) => {});
+      
+    },
+    showToDownlodPDFDialogAction() {
+      this.showToDownlodPDFDialog = true;
     },
     hideDownloadAction() {
       this.download_id = "";
@@ -6062,6 +6140,30 @@ export default {
       });
       return counter;
     },
+    toggleSelectedClaims(claim){
+      if(this.selectedClaims.filter(e => e.id == claim.id).length > 0){
+        this.selectedClaims=this.selectedClaims.filter(e => e.id != claim.id)
+      }
+      else
+      this.selectedClaims.push(claim);
+      //this.selectedClaims.sort((a, b) => a.id - b.id);
+    }
   },
 };
 </script>
+<style scoped>
+.sticky-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.sbicky-toolbar {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  background-color: #f5f5f5;
+}
+
+</style>

@@ -55,7 +55,7 @@
                 color="white"
                 v-if="showDownload"
                 :href="
-                  'http://10.20.33.112:9008/storage/cdn/containers/incident_report/' +
+                  process.env.VUE_APP_API_URL+'/storage/cdn/containers/incident_report/' +
                   dateClaim.incident_report
                 "
                 download="proposed_file_name"

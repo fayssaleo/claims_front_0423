@@ -1,16 +1,19 @@
 @import "~@mdi/font/css/materialdesignicons.css";
+
 .btn {
   border-radius: 6px;
   width: 220px;
   color: rgb(255, 255, 255);
   padding: 8px;
 }
+
 .btnAction {
   border-radius: 6px;
   width: 100px;
   color: rgb(255, 255, 255);
   padding: 8px;
 }
+
 .settingContainer {
   display: flex;
   border: 1px solid #000;
@@ -19,17 +22,20 @@
   align-items: center;
   border-radius: 4px;
   padding: 12px;
+
   .username {
     color: #284066;
     font-family: "system-ui" !important;
     padding-right: 8px !important;
   }
 }
+
 .title {
   color: #284066;
   font-weight: bold !important;
   font-family: "system-ui" !important;
 }
+
 h3 {
   text-align: center;
 }
@@ -37,6 +43,7 @@ h3 {
 .linktext {
   text-decoration: none !important;
 }
+
 .itemdrawer {
   text-align: center;
 
@@ -46,6 +53,7 @@ h3 {
   margin: 10px;
   border-radius: 5px;
   text-decoration: none !important;
+
   .itemd {
     text-decoration: none !important;
 
@@ -57,6 +65,7 @@ h3 {
     display: block;
   }
 }
+
 .itemdrawer:hover {
   text-align: center;
 
@@ -74,10 +83,12 @@ h3 {
     padding-top: 3%;
   }
 }
+
 .activeDrawer {
   background-color: #284066 !important;
   color: rgb(255, 255, 255) !important;
   font-family: "system-ui";
+
   .itemd {
     padding-top: 6px !important;
     color: rgb(255, 255, 255) !important;
@@ -89,17 +100,21 @@ h3 {
     padding-top: 4%;
   }
 }
+
 .downloadpicture {
   text-decoration: none;
 }
+
 .btnFile {
   width: 30px;
   margin-bottom: 4px;
   margin-left: 4px;
 }
+
 .claimDateInputField {
   width: 100%;
 }
+
 .download {
   background-color: #7acb7a;
   color: white;
@@ -111,9 +126,11 @@ h3 {
   user-select: none;
   text-decoration: none;
 }
+
 .download:active {
   background-color: #7acb7a54;
 }
+
 .change {
   background-color: #ff0000b0;
   color: white;
@@ -132,6 +149,7 @@ h3 {
 .deleteButtonerson:active {
   background-color: rgba(0, 0, 0, 0.099);
 }
+
 .fileNameEstimate {
   background-color: #ffffff;
   padding: 1rem;
@@ -139,16 +157,19 @@ h3 {
   margin-bottom: 4px;
   border: #000 1px solid;
 }
+
 .other {
   .v-input__slot {
     background-color: red;
   }
 }
+
 .tabsSliderMenu {
   .v-toolbar__content {
     height: 0 !important;
   }
 }
+
 .value_valuationChange {
   margin-right: 4px;
   margin-left: 4px;
@@ -168,13 +189,16 @@ h3 {
 
 .filterByMonth {
   margin-right: 18px;
+
   .v-text-field__details {
     display: none;
   }
+
   .v-input__control {
     .v-input__slot {
       margin: 0;
       margin-right: 14px;
+
       fieldset {
         height: 44px;
         margin-top: 9px;
@@ -182,19 +206,24 @@ h3 {
     }
   }
 }
+
 .filterByMonthBtn {
   margin: 0 39px 0 21px;
 }
+
 .DownloadBtn {
   margin: 0 39px 0 21px;
 }
+
 .v-expansion-panel-header__icon {
   i {
     color: white !important;
   }
 }
+
 .equipment_expanion_icon {
   color: black !important;
+
   .v-expansion-panel-header__icon {
     i {
       color: black !important;
@@ -205,9 +234,11 @@ h3 {
 .my-list .v-list-item:not(:first-child) {
   border-top: 1px rgba(0, 0, 0, 0.308) solid;
 }
+
 .my-list .v-list-item:not(:last-child) {
   border-bottom: 1px rgba(0, 0, 0, 0.308) solid;
 }
+
 body {
   font-family: "Roboto", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -218,9 +249,11 @@ body {
 .mdi {
   font-family: "Material Design Icons";
 }
+
 .panelCutomizedColor {
   background-color: #000000b0 !important;
 }
+
 .panelCustomizedColor2 {
   background-color: #9e9e9e73 !important;
 }
@@ -230,6 +263,75 @@ body {
   color: white !important;
 }
 
+
+
 .claims_tr td {
   border-top: 1px solid rgba(0, 0, 0, 0.375) !important;
+}
+
+.checklist .v-input {
+  margin: 0 !important;
+
+  .v-messages {
+    display: none !important;
+  }
+
+  .v-input__slot {
+    margin: 0 !important;
+    height: 58px !important;
+    padding-left: 11px !important;
+
+    .v-label {
+      font-size: 27px;
+    }
+  }
+
+
+}
+
+
+.checklist .v-input:hover {
+  background-color: rgba(0, 0, 0, 0.163);
+
+}
+
+.checklist .v-input:active {
+  background-color: rgba(0, 0, 0, 0.403);
+
+}
+
+.checklist .checked {
+  background-color: #82b1ff;
+
+  .v-icon {
+    color: white !important;
+    caret-color: white !important;
+  }
+
+  .v-label {
+    color: white;
+  }
+
+}
+
+.checklist .checked:hover {
+  background-color: #82b2ffbc;
+
+}
+
+.checklist .checked:active {
+  background-color: #82b2ffe8;
+
+}
+
+.claimsDetailPanelContent>.v-expansion-panel-content__wrap {
+  padding: 0 !important;
+}
+
+
+
+.claimsDetailPanelContentPanelCenter>.v-item-group {
+  margin: 21px auto !important;
+  width: 96% !important;
+  margin-top: 14px !important;
 }

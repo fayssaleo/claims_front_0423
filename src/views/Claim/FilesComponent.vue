@@ -37,7 +37,7 @@ export default {
         name: "",
         value: "",
       },
-      URL: "http://10.20.33.112:9008/storage/cdn/claim/incident_report/",
+      URL: process.env.VUE_APP_API_URL+"/storage/cdn/claim/incident_report/",
     };
   },
 

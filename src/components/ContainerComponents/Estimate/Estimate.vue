@@ -495,7 +495,7 @@ export default {
       { name: "US Dollar", code: "USD", symbol: "$", id: 10 },
       { name: "Australian Dollar", code: "AUD", symbol: "$", id: 11 },
     ],
-    URL: "http://10.20.33.112:9008/storage/cdn/fileEstimates",
+    URL: process.env.VUE_APP_API_URL+"/storage/cdn/fileEstimates",
     deleteInputs: [],
   }),
   mounted() {
